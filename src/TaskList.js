@@ -6,7 +6,10 @@ import Task from './Task';
 export default class TaskList extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { tasks: props.tasks };
+    this.state = { 
+      tasks: props.tasks ,
+      new_task: ''
+    };
     this.deleteTask = this.deleteTask.bind(this);
   }
 
@@ -24,7 +27,7 @@ export default class TaskList extends React.Component {
         tasks: [
           ...prevState.tasks, 
           {
-          name: 'Apple',
+          name: this.state.new_task,
           ID:5
           }
         ]
@@ -36,7 +39,7 @@ export default class TaskList extends React.Component {
                   })
       )
     console.log(this.state.tasks)
-
+    this.setState(()=>({new_task:''}))
 
     // this.setState({
     //   tasks: this.state.tasks.push({name:put_name,number:put_number,idx:(this.state.tasks[this.state.tasks.])})
@@ -57,9 +60,12 @@ export default class TaskList extends React.Component {
           ))}
         </View>
         <View  style = {styles.buttomPlace}>
-          <TextInput />
+          <TextInput 
+            style={{height: 40, borderColor: 'gray', borderWidth: 1}}
+            onChangeText = {(text)=>this.setState({new_task:text})}
+          />
           <Button 
-              title = {'click'} 
+              title = {'add task'} 
               onPress = {this.addItem}
 
           />
