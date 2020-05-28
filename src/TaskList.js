@@ -1,7 +1,8 @@
 import React from 'react';
 import { View, StyleSheet, TextInput,Button } from 'react-native';
 import Task from './Task';
-
+import 'react-native-get-random-values';
+import { v4 as uuidv4 } from 'uuid';
 
 export default class TaskList extends React.Component {
   constructor(props) {
@@ -28,23 +29,17 @@ export default class TaskList extends React.Component {
           ...prevState.tasks, 
           {
           name: this.state.new_task,
-          ID:5
+          ID:uuidv4()
           }
         ]
-        // const newState = {
-        //     ...prevState,
-        //     tasks: {...prevState.tasks,...newToDoObject}
-        // }
-        // return {...newState}
-                  })
-      )
+    })
+    )
     console.log(this.state.tasks)
     this.setState(()=>({new_task:''}))
-
-    // this.setState({
-    //   tasks: this.state.tasks.push({name:put_name,number:put_number,idx:(this.state.tasks[this.state.tasks.])})
-    // })
   };
+
+  
+
 
   render() {
     return (
