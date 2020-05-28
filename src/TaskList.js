@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StyleSheet, TextInput,Button } from 'react-native';
+import { View, StyleSheet, TextInput,Button,AsyncStorage,FlatList, SafeAreaView } from 'react-native';
 import Task from './Task';
 import 'react-native-get-random-values';
 import { v4 as uuidv4 } from 'uuid';
@@ -44,16 +44,29 @@ export default class TaskList extends React.Component {
   render() {
     return (
       <View style = {styles.container}>
-        <View >
-          {this.state.tasks.map(task => (
+        <SafeAreaView >
+          {/* {this.state.tasks.map(task => (
             <Task
               key={task.ID}
               name={task.name}
-              idx = {task.ID}
+              ID = {task.ID}
               deleteTask={this.deleteTask}
             />
-          ))}
-        </View>
+          ))} */}
+          <FlatList
+            
+            data = {this.state.tasks}
+            renderItem={
+              ({item}) => (
+              <Task
+                name = {item.name}
+                ID = {item.ID}
+                deleteTask = {this.deleteTask} />
+              )
+            }
+            keyExtractor = {item =>item.ID} />
+
+        </SafeAreaView>
         <View  style = {styles.buttomPlace}>
           <TextInput 
             style={{height: 40, borderColor: 'gray', borderWidth: 1}}

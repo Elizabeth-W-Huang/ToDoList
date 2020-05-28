@@ -13,7 +13,7 @@ export default class Task extends React.Component{
         super(props)
         this.state = {
             name : props.name,
-            idx: props.ID,
+            ID: props.ID,
         }
         this.taskDelete = this.props.deleteTask
         //this.taskDelete = this.taskDelete.bind(this)
@@ -24,13 +24,14 @@ export default class Task extends React.Component{
     render(){
       return(
         <View >
+
           <View >
             <Text >item: {this.state.name}</Text>
           </View>
           <View >
             <Button 
               title = {'click'} 
-              onPress = {()=>this.taskDelete(this.props.idx)}
+              onPress = {()=>this.taskDelete(this.props.ID)}
 
             />
           </View>
