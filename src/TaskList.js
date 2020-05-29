@@ -44,16 +44,8 @@ export default class TaskList extends React.Component {
   render() {
     return (
       <View style = {styles.container}>
-        <SafeAreaView >
-          {/* {this.state.tasks.map(task => (
-            <Task
-              key={task.ID}
-              name={task.name}
-              ID = {task.ID}
-              deleteTask={this.deleteTask}
-            />
-          ))} */}
-          <FlatList
+        <SafeAreaView style = {styles.list_item}>
+          <FlatList      
             
             data = {this.state.tasks}
             renderItem={
@@ -85,21 +77,26 @@ export default class TaskList extends React.Component {
 
 const styles = StyleSheet.create({
   container: {
-    justifyContent: 'space-around',
-    paddingTop: '10%',
-    paddingBottom: '10%',
-    marginTop: 50,
-    flex: 1,
+    alignItems: "stretch",
+    margin:10,
+    flex:5,
     flexDirection: 'column',
-    backgroundColor: 'darkslateblue',
+    backgroundColor: 'floralwhite',
+  },
+  list_item:{
+    flex:8,
+    marginTop:80,
+    padding:10,
+    flexDirection: 'column'
   },
   buttomPlace: {
-    flex: 0.25,
-    backgroundColor: 'cadetblue',
+    flex:1,
+    backgroundColor: 'darkseagreen',
     marginBottom: '15%',
   },
   input: {
-    height: 50,
+    height: 1,
+
     backgroundColor: 'white',
   }
 });
