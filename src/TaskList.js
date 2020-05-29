@@ -55,9 +55,9 @@ export default class TaskList extends React.Component {
                 title = {item.name}
                 checkBox = {{
                   iconType : 'font-awesome',
-                  uncheckedIcon: 'circle-o',
-                  uncheckedColor: 'red',
-                  size: 30,
+                  uncheckedIcon: 'check-square',
+                  uncheckedColor: 'grey',
+                  size: 20,
                   onPress: () => this.deleteTask(item)
                   
                 }}
