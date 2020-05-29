@@ -71,12 +71,11 @@ export default class TaskList extends React.Component {
           <TextInput 
             style={{height: 40, borderColor: 'gray', borderWidth: 1}}
             onChangeText = {(text)=>this.setState({new_task:text})}
+            placeholder = 'Enter new task here'
+            clearButtonMode = 'always'
+            onSubmitEditing = {this.addItem}
           />
-          <Button 
-              title = {'add task'} 
-              onPress = {this.addItem}
 
-          />
 
         </View>
       </View>
