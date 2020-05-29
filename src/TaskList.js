@@ -1,22 +1,25 @@
 import React from 'react';
-import { View, StyleSheet, TextInput,Button,AsyncStorage,FlatList, SafeAreaView } from 'react-native';
-import Task from './Task';
+import { View, StyleSheet, TextInput,Button,AsyncStorage,FlatList } from 'react-native';
+
 import 'react-native-get-random-values';
 import { v4 as uuidv4 } from 'uuid';
+import {Card,ListItem} from 'react-native-elements';
 
 export default class TaskList extends React.Component {
   constructor(props) {
     super(props);
     this.state = { 
       tasks: props.tasks ,
-      new_task: ''
+      new_task: '',
+      checked:[]
     };
     this.deleteTask = this.deleteTask.bind(this);
   }
 
-  deleteTask(key) {
+  deleteTask(item) {
     // setState : reactNative
     // filter : javascript
+    const key = item.ID
     this.setState({tasks: this.state.tasks.filter(task => task.ID !== key)})
 
     console.log(this.state.tasks)
@@ -44,10 +47,29 @@ export default class TaskList extends React.Component {
   render() {
     return (
       <View style = {styles.container}>
-        <SafeAreaView style = {styles.list_item}>
-          <FlatList      
+        <Card title = "To Do List">  
+          {
+            this.state.tasks.map((item) =>(
+              <ListItem 
+                key = {item.ID}
+                title = {item.name}
+                checkBox = {{
+                  iconType : 'font-awesome',
+                  uncheckedIcon: 'circle-o',
+                  uncheckedColor: 'red',
+                  size: 30,
+                  onPress: () => this.deleteTask(item)
+                  
+                }}
+              />
+            )
             
-            data = {this.state.tasks}
+            
+            )
+          }
+
+
+            {/* data = {this.state.tasks}
             renderItem={
               ({item}) => (
               <Task
@@ -56,9 +78,9 @@ export default class TaskList extends React.Component {
                 deleteTask = {this.deleteTask} />
               )
             }
-            keyExtractor = {item =>item.ID} />
+            keyExtractor = {item =>item.ID} /> */}
 
-        </SafeAreaView>
+          </Card>   
         <View  style = {styles.buttomPlace}>
           <TextInput 
             style={{height: 40, borderColor: 'gray', borderWidth: 1}}
@@ -79,18 +101,15 @@ const styles = StyleSheet.create({
   container: {
     alignItems: "stretch",
     margin:10,
-    flex:5,
     flexDirection: 'column',
     backgroundColor: 'floralwhite',
   },
   list_item:{
-    flex:8,
     marginTop:80,
     padding:10,
     flexDirection: 'column'
   },
   buttomPlace: {
-    flex:1,
     backgroundColor: 'darkseagreen',
     marginBottom: '15%',
   },
