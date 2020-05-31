@@ -1,20 +1,27 @@
 import React from 'react';
-import { View, StyleSheet, TextInput,Button,AsyncStorage,FlatList } from 'react-native';
+import { View, StyleSheet, ScrollView,ImageBackground,FlatList } from 'react-native';
 
 import 'react-native-get-random-values';
 import { v4 as uuidv4 } from 'uuid';
-import {Card,ListItem} from 'react-native-elements';
+import {Card,ListItem,Input} from 'react-native-elements';
+import AsyncStorage from '@react-native-community/async-storage';
+
+
+
+
 
 export default class TaskList extends React.Component {
-  constructor(props) {
-    super(props);
+  constructor(input_tasks) {
+    super(input_tasks);
     this.state = { 
-      tasks: props.tasks ,
-      new_task: '',
-      checked:[]
+      tasks: input_tasks.tasks ,
+      new_task: ''
     };
     this.deleteTask = this.deleteTask.bind(this);
+    this._storeData = input_tasks._storeData
   }
+
+  
 
   deleteTask(item) {
     // setState : reactNative
@@ -22,11 +29,10 @@ export default class TaskList extends React.Component {
     const key = item.ID
     this.setState({tasks: this.state.tasks.filter(task => task.ID !== key)})
 
-    console.log(this.state.tasks)
   }
 
   addItem = () => {
-    
+    this.state.new_task &&
     this.setState(prevState =>({
         tasks: [
           ...prevState.tasks, 
@@ -37,7 +43,7 @@ export default class TaskList extends React.Component {
         ]
     })
     )
-    console.log(this.state.tasks)
+    this._storeData(this.state.tasks)
     this.setState(()=>({new_task:''}))
   };
 
@@ -47,7 +53,14 @@ export default class TaskList extends React.Component {
   render() {
     return (
       <View style = {styles.container}>
-        <Card title = "To Do List">  
+        {/* <ImageBackground 
+          source = {require('../img/background.png')}
+          style = {styles.background}
+        > */}
+        <ScrollView>
+        <Card 
+        title = "To Do List" 
+        containerStyle = {styles.card_style}>  
           {
             this.state.tasks.map((item) =>(
               <ListItem 
@@ -55,67 +68,51 @@ export default class TaskList extends React.Component {
                 title = {item.name}
                 checkBox = {{
                   iconType : 'font-awesome',
-                  uncheckedIcon: 'check-square',
+                  uncheckedIcon: 'circle-o',
                   uncheckedColor: 'grey',
                   size: 20,
                   onPress: () => this.deleteTask(item)
-                  
+
                 }}
               />
-            )
-            
-            
-            )
+            ))
           }
-
-
-            {/* data = {this.state.tasks}
-            renderItem={
-              ({item}) => (
-              <Task
-                name = {item.name}
-                ID = {item.ID}
-                deleteTask = {this.deleteTask} />
-              )
-            }
-            keyExtractor = {item =>item.ID} /> */}
-
-          </Card>   
-        <View  style = {styles.buttomPlace}>
-          <TextInput 
-            style={{height: 40, borderColor: 'gray', borderWidth: 1}}
+          <Input 
+            style = {styles.input_box}
+            placeholder = 'Task'
+            leftIcon = {{type:'font-awesome',name: 'list-ul'}}
             onChangeText = {(text)=>this.setState({new_task:text})}
-            placeholder = 'Enter new task here'
-            clearButtonMode = 'always'
             onSubmitEditing = {this.addItem}
+            clearButtonMode = 'always'
           />
 
-
-        </View>
+        </Card>   
+      </ScrollView>      
+      {/* /</ImageBackground> */}
       </View>
     );
   }
 }
 
+
+
 const styles = StyleSheet.create({
+  background:{
+    flex:1
+  },
   container: {
     alignItems: "stretch",
-    margin:10,
+    margin:'5%',
+    height:'100%',
+    paddingBottom:'15%',
     flexDirection: 'column',
     backgroundColor: 'floralwhite',
   },
-  list_item:{
-    marginTop:80,
-    padding:10,
-    flexDirection: 'column'
+  card_style:{
+    height:'90%'
+    
   },
-  buttomPlace: {
-    backgroundColor: 'darkseagreen',
-    marginBottom: '15%',
-  },
-  input: {
-    height: 1,
-
-    backgroundColor: 'white',
+  input_box:{
+    paddingBottom: '10%'
   }
 });

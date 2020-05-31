@@ -1,41 +1,64 @@
 import React from 'react';
-import {
-  SafeAreaView,
-  StyleSheet,
-  ScrollView,
-  View,
-  Text,
-  StatusBar
-} from 'react-native';
-
 import 'react-native-get-random-values';
 import { v4 as uuidv4 } from 'uuid';
-import {AsyncStorage} from '@react-native-community/async-storage'
-
-
-
 import TaskList from './src/TaskList';
+import AsyncStorage from '@react-native-community/async-storage';
+
+const storage_key = '@tasks:key'
 
 export default class App extends React.Component{
+
   constructor(){
     super();
     this.state ={
-      tasks : [
-        { name : 'cabbage',ID:uuidv4()}, { name : 'carrot',ID:uuidv4()}, 
-        { name : 'rice',ID:uuidv4() }
-      ]
-      //tasks: [this._init_fake_task('cabbage'),this._init_fake_task('apple'),this._init_fake_task('banana')]
-      
+      todos: {},
+      isDataReady: false,
+      filter: 'Todo'
+    }
+    
+    
+  }
+
+  componentDidMount(){
+
+    this._storeData([{name:'apple',ID:uuidv4()},{name:'banana',ID:uuidv4()}])
+    this._getData()
+  }
+
+
+  _storeData = async (new_tasks) => {
+    
+    try {
+      const tasks = JSON.stringify(new_tasks)
+      await AsyncStorage.setItem(storage_key, tasks)
+      {tasks&&this.setState({tasks})}
+      //{console.log(this.state.tasks)}
+    } catch (e) {
+      alert(e)
     }
   }
 
-
+  
+  _getData = async () => {
+    try {
+      const response = await AsyncStorage.getItem(storage_key)
+      const tasks = JSON.parse(response)
+      
+      
+      {tasks && this.setState({tasks})}
+    } catch(e) {
+      alert('fail to retrieve data')
+    }
+  }
+  
 
   render(){
     return(
-      <TaskList tasks = {this.state.tasks} />
+      this._storeData([{name:'apple',ID:uuidv4()},{name:'banana',ID:uuidv4()}]),
+      this._getData(),
+      <TaskList tasks = {this.state.tasks} _storeData = {this._storeData}/>
+
     )
   }
 }
-
 
