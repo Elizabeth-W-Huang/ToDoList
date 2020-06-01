@@ -13,7 +13,7 @@ export default class App extends React.Component{
     super();
     this.state ={
       todos: [
-        {name: 'apple',ID:uuidv4()},{name: 'banana',ID:uuidv4()}
+        //{name: 'apple',ID:uuidv4()},{name: 'banana',ID:uuidv4()}
       ],
       isDataReady: false
     }
@@ -21,12 +21,21 @@ export default class App extends React.Component{
     
   }
 
-  // componentDidMount(){
+  componentDidMount(){
+    this._loadData()
+    this._getData()
+  }
 
-  //   this._storeData([{name:'apple',ID:uuidv4()},{name:'banana',ID:uuidv4()}])
-  //   this._getData()
-  // }
+  _loadData = async () =>{
+    try{
+        console.log('loading data...')
+        const tasks = [{name: 'apple',ID:uuidv4()},{name: 'banana',ID:uuidv4()}]
+        await AsyncStorage.setItem(storage_key,JSON.stringify(tasks))
+    } catch(e){
+      alert(e)
+    }
 
+  }
 
   _storeData = async (new_tasks) => {
     
@@ -43,11 +52,10 @@ export default class App extends React.Component{
   
   _getData = async () => {
     try {
-      const response = await AsyncStorage.getItem(storage_key)
-      const tasks = JSON.parse(response)
-      
-      
-      {tasks && this.setState({tasks})}
+      console.log('retrieve data')
+      AsyncStorage.getItem(storage_key).then( (tasks)=>{
+        this.setState({todos:JSON.parse(tasks)})
+      })
     } catch(e) {
       alert('fail to retrieve data')
     }
