@@ -12,13 +12,15 @@ import AsyncStorage from '@react-native-community/async-storage';
 
 export default class TaskList extends React.Component {
   constructor(input_tasks) {
+    
     super(input_tasks);
     this.state = { 
-      tasks: input_tasks.tasks ,
+    
+      tasks: [...input_tasks.tasks],
       new_task: ''
     };
     this.deleteTask = this.deleteTask.bind(this);
-    this._storeData = input_tasks._storeData
+    //this._storeData = input_tasks._storeData
   }
 
   
@@ -43,26 +45,24 @@ export default class TaskList extends React.Component {
         ]
     })
     )
-    this._storeData(this.state.tasks)
+
+    //this._storeData(this.state.tasks)
     this.setState(()=>({new_task:''}))
   };
 
-  
+
 
 
   render() {
     return (
       <View style = {styles.container}>
-        {/* <ImageBackground 
-          source = {require('../img/background.png')}
-          style = {styles.background}
-        > */}
+
         <ScrollView>
         <Card 
-        title = "To Do List" 
-        containerStyle = {styles.card_style}>  
+          title = "To Do List" 
+          containerStyle = {styles.card_style}>  
           {
-            this.state.tasks.map((item) =>(
+            this.state.tasks.map(  (item) =>( 
               <ListItem 
                 key = {item.ID}
                 title = {item.name}
@@ -71,11 +71,9 @@ export default class TaskList extends React.Component {
                   uncheckedIcon: 'circle-o',
                   uncheckedColor: 'grey',
                   size: 20,
-                  onPress: () => this.deleteTask(item)
-
-                }}
-              />
-            ))
+                  onPress: () => this.deleteTask(item)}}
+    /> 
+            )  )
           }
           <Input 
             style = {styles.input_box}
@@ -88,7 +86,7 @@ export default class TaskList extends React.Component {
 
         </Card>   
       </ScrollView>      
-      {/* /</ImageBackground> */}
+
       </View>
     );
   }

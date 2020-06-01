@@ -3,6 +3,7 @@ import 'react-native-get-random-values';
 import { v4 as uuidv4 } from 'uuid';
 import TaskList from './src/TaskList';
 import AsyncStorage from '@react-native-community/async-storage';
+import { View ,Text} from 'react-native';
 
 const storage_key = '@tasks:key'
 
@@ -11,19 +12,20 @@ export default class App extends React.Component{
   constructor(){
     super();
     this.state ={
-      todos: {},
-      isDataReady: false,
-      filter: 'Todo'
+      todos: [
+        {name: 'apple',ID:uuidv4()},{name: 'banana',ID:uuidv4()}
+      ],
+      isDataReady: false
     }
     
     
   }
 
-  componentDidMount(){
+  // componentDidMount(){
 
-    this._storeData([{name:'apple',ID:uuidv4()},{name:'banana',ID:uuidv4()}])
-    this._getData()
-  }
+  //   this._storeData([{name:'apple',ID:uuidv4()},{name:'banana',ID:uuidv4()}])
+  //   this._getData()
+  // }
 
 
   _storeData = async (new_tasks) => {
@@ -54,10 +56,7 @@ export default class App extends React.Component{
 
   render(){
     return(
-      this._storeData([{name:'apple',ID:uuidv4()},{name:'banana',ID:uuidv4()}]),
-      this._getData(),
-      <TaskList tasks = {this.state.tasks} _storeData = {this._storeData}/>
-
+      <TaskList tasks = {this.state.todos} _storeData = {this._storeData}/>
     )
   }
 }
