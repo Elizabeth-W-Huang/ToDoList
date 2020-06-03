@@ -12,60 +12,35 @@ export default class App extends React.Component{
   constructor(){
     super();
     this.state ={
-      todos: [
-        //{name: 'apple',ID:uuidv4()},{name: 'banana',ID:uuidv4()}
-      ],
+      todos: [],
       isDataReady: false
     }
-    
-    
   }
 
   componentDidMount(){
-    this._loadData()
     this._getData()
   }
 
-  _loadData = async () =>{
-    try{
-        console.log('loading data...')
-        const tasks = [{name: 'apple',ID:uuidv4()},{name: 'banana',ID:uuidv4()}]
-        await AsyncStorage.setItem(storage_key,JSON.stringify(tasks))
-    } catch(e){
-      alert(e)
-    }
-
-  }
-
-  _storeData = async (new_tasks) => {
-    
-    try {
-      const tasks = JSON.stringify(new_tasks)
-      await AsyncStorage.setItem(storage_key, tasks)
-      {tasks&&this.setState({tasks})}
-      //{console.log(this.state.tasks)}
-    } catch (e) {
-      alert(e)
-    }
-  }
-
-  
   _getData = async () => {
-    try {
-      console.log('retrieve data')
-      AsyncStorage.getItem(storage_key).then( (tasks)=>{
-        this.setState({todos:JSON.parse(tasks)})
-      })
-    } catch(e) {
-      alert('fail to retrieve data')
-    }
+    await AsyncStorage.getItem(storage_key).then((get_tasks) =>{
+      if(get_tasks!==null){
+        this.setState({todos:JSON.parse(get_tasks),isDataReady:true})
+      } 
+    })
+    console.log('_getData:  ',this.state)
+    
   }
   
-
   render(){
-    return(
-      <TaskList tasks = {this.state.todos} _storeData = {this._storeData}/>
-    )
+    
+      
+      if(!this.state.isDataReady){
+        return <View><Text>Loading...</Text></View>
+      }
+      return(
+        <TaskList tasks = {this.state.todos} 
+        />)
+    
   }
 }
 
