@@ -19,14 +19,18 @@ export default class App extends React.Component{
 
   componentDidMount(){
     this._getData()
+    console.log('exit_getdata')
   }
 
   _getData = async () => {
-    await AsyncStorage.getItem(storage_key).then((get_tasks) =>{
+    await AsyncStorage.getItem(storage_key)
+    .then( (get_tasks) =>{
       if(get_tasks!==null){
         this.setState({todos:JSON.parse(get_tasks),isDataReady:true})
-      } 
-    })
+      } else{
+        this.setState({todos:[{name:'apple',ID:uuidv4()},{name:'banana',ID:uuidv4()}],isDataReady:true})
+      }
+    } )
     console.log('_getData:  ',this.state)
     
   }
