@@ -17,6 +17,7 @@ export default class TaskList extends React.Component {
       tasks: [...input_tasks.tasks],
       new_task: ''
     };
+    this.input_control = React.createRef();
     this.deleteTask = this.deleteTask.bind(this);
   }
 
@@ -42,7 +43,8 @@ export default class TaskList extends React.Component {
       await AsyncStorage.setItem(storage_key,JSON.stringify(this.state.tasks))
       .then(()=>{
         console.log('after setSTATE   ' , this.state.tasks),
-        this.setState({new_task:""})}
+        this.setState({new_task:""})},
+        this.input_control.current.clear()
       )
       }
     )
@@ -83,12 +85,11 @@ export default class TaskList extends React.Component {
           }
           <Input 
             style = {styles.input_box}
-            placeholder = 'Task'
-            leftIcon = {{type:'font-awesome',name: 'list-ul'}}
+            placeholder = 'New Task'
+            leftIcon = {{type:'font-awesome',name: 'list-ul',onPress : this.addItem}}
             onChangeText = {(text)=>this.setState({new_task:text})}
-            onSubmitEditing = {this.addItem}
             clearButtonMode = 'always'
-          
+            ref = {this.input_control}
           />
 
         </Card>   
