@@ -3,7 +3,7 @@ import 'react-native-get-random-values';
 import { v4 as uuidv4 } from 'uuid';
 import TaskList from './src/TaskList';
 import AsyncStorage from '@react-native-community/async-storage';
-import { View ,Text} from 'react-native';
+import { View ,Text,Image, StyleSheet} from 'react-native';
 
 const storage_key = '@tasks:key'
 
@@ -39,7 +39,14 @@ export default class App extends React.Component{
     
       
       if(!this.state.isDataReady){
-        return <View><Text>Loading...</Text></View>
+        return (
+          <View style = {styles.loading_view}>
+            <Image 
+              style = {styles.loading_image}
+              source = {require('./assets/loading_image.gif')}
+            />
+          </View>
+        )
       }
       return(
         <TaskList tasks = {this.state.todos} 
@@ -48,3 +55,16 @@ export default class App extends React.Component{
   }
 }
 
+const styles = StyleSheet.create({
+  loading_view:{
+    justifyContent: 'center',
+    alignItems:'center',
+    height:'100%',
+    backgroundColor: 'floralwhite',
+
+  },
+  loading_image:{
+    width: 100,
+    height: 100,
+  }
+})

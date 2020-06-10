@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet,TextInput } from 'react-native';
 
 import 'react-native-get-random-values';
 import { v4 as uuidv4 } from 'uuid';
@@ -71,7 +71,8 @@ export default class TaskList extends React.Component {
       //leftElement = {this.renderLeftElement}
     /> )
 
-  
+
+
   render() {
     return (
       
@@ -91,6 +92,7 @@ export default class TaskList extends React.Component {
             clearButtonMode = 'always'
             ref = {this.input_control}
           />
+
 
         </Card>   
 
