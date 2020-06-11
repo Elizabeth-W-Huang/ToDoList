@@ -56,17 +56,34 @@ export default class TaskList extends React.Component {
   //   />
   // )
 
+  onCheckItem = async(checked_ID)=>{
+    const checked_idx = this.state.tasks.findIndex(item=>item.ID===checked_ID)
+    let new_tasks = this.state.tasks
+    new_tasks[checked_idx].isComplete = ! new_tasks[checked_idx].isComplete
+    
+    this.setState({tasks:new_tasks})
+    await AsyncStorage.setItem(storage_key,JSON.stringify(this.state.tasks))
+  }
+
   _renderList = (item) =>(
     //console.log('_renderList: ',item),
     <ListItem 
       key = {item.ID}
       title = {item.name}
+      leftIcon = {{
+        type : 'font-awesome',
+        name:item.isComplete ? 'circle-thin':'circle',
+        onPress: () => this.onCheckItem(item.ID),
+        size : 18
+        //onPress: 
+      }}
+      titleStyle = {item.isComplete && styles.task_checked }
       checkBox = {{
         iconType : 'font-awesome',
-        uncheckedIcon: 'circle-o',
+        uncheckedIcon: 'times',
         uncheckedColor: 'grey',
         clearButtonMode : 'always',
-        size: 20,
+        size: 15,
         onPress: () => this.deleteTask(item)}}
       //leftElement = {this.renderLeftElement}
     /> )
@@ -118,4 +135,8 @@ const styles = StyleSheet.create({
   input_box:{
     paddingBottom: '10%'
   },
+  task_checked:{
+    textDecorationLine:'line-through',
+    color:'gray',
+  }
 });

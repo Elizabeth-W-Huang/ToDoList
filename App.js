@@ -28,7 +28,14 @@ export default class App extends React.Component{
       if(get_tasks!==null){
         this.setState({todos:JSON.parse(get_tasks),isDataReady:true})
       } else{
-        this.setState({todos:[{name:'apple',ID:uuidv4()},{name:'banana',ID:uuidv4()}],isDataReady:true})
+        this.setState(
+          {
+            todos:[
+              {name:'apple',ID:uuidv4(),isComplete:true},
+              {name:'banana',ID:uuidv4(),isComplete:false}
+            ],
+          isDataReady:true}
+        )
       }
     } )
     console.log('_getData:  ',this.state)
