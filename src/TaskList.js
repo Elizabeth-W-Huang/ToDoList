@@ -51,10 +51,6 @@ export default class TaskList extends React.Component {
 
   };
 
-  // renderLeftElement = ()=>(
-  //   <CheckBox 
-  //   />
-  // )
 
   onCheckItem = async(checked_ID)=>{
     const checked_idx = this.state.tasks.findIndex(item=>item.ID===checked_ID)
@@ -66,26 +62,24 @@ export default class TaskList extends React.Component {
   }
 
   _renderList = (item) =>(
-    //console.log('_renderList: ',item),
+
     <ListItem 
       key = {item.ID}
       title = {item.name}
       leftIcon = {{
         type : 'font-awesome',
-        name:item.isComplete ? 'circle-thin':'circle',
+        name:item.isComplete ? 'circle':'circle-thin',
         onPress: () => this.onCheckItem(item.ID),
         size : 18
-        //onPress: 
       }}
       titleStyle = {item.isComplete && styles.task_checked }
-      checkBox = {{
-        iconType : 'font-awesome',
-        uncheckedIcon: 'times',
-        uncheckedColor: 'grey',
-        clearButtonMode : 'always',
-        size: 15,
-        onPress: () => this.deleteTask(item)}}
-      //leftElement = {this.renderLeftElement}
+      rightIcon = {item.isComplete&&{
+        type: 'font-awesome',
+        name: 'trash',
+        color: 'grey',
+        size: 18,
+        onPress: () => this.deleteTask(item)
+      }}
     /> )
 
 
@@ -98,13 +92,12 @@ export default class TaskList extends React.Component {
           title = "To Do List" 
           containerStyle = {styles.card_style}>  
           {
-            //console.log('<Card/>: ',this.state),
             this.state.tasks.map( item => this._renderList(item))
           }
           <Input 
             style = {styles.input_box}
             placeholder = 'New Task'
-            leftIcon = {{type:'font-awesome',name: 'list-ul',onPress : this.addItem}}
+            rightIcon = {{type:'font-awesome',name: 'plus',onPress : this.addItem,size:18}}
             onChangeText = {(text)=>this.setState({new_task:text})}
             clearButtonMode = 'always'
             ref = {this.input_control}
